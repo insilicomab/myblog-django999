@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>{{ request.site.siteconfig.meta_title }}</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Start your project here-->
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+            <!-- Navbar brand -->
+            <a class="navbar-brand me-2" href="{% url 'blog:index' %}">My Blog</a>
+        
+            <!-- Toggle button -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarButtonsExample"
+                aria-controls="navbarButtonsExample"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+        
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin" target="_blank">管理画面</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Post
+                  </a>
+                  <!-- Dropdown menu -->
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{% url 'blog:post_create' %}">新規投稿</a></li>
+                    <li><a class="dropdown-item" href="{% url 'blog:post_list' %}">投稿一覧</a></li>
+                  </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Category
+                  </a>
+                  <!-- Dropdown menu -->
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for item in category_list %}
+                    <li><a class="dropdown-item" href="{% url 'blog:category_detail' item.name_en %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                    <hr>
+                    <li><a class="dropdown-item" href="{% url 'blog:category_list' %}">カテゴリー一覧</a></li>
+                  </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Account
+                  </a>
+                  <!-- Dropdown menu -->
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% if request.user.is_authenticated %}
+                    <li><a class="dropdown-item" href="">{{ request.user }}</a></li>
+                    <li><a class="dropdown-item" href="{% url 'blog:logout' %}">ログアウト</a></li>
+                  {% else %}
+                    <li><a class="dropdown-item" href="{% url 'blog:login' %}">ログイン</a></li>
+                    <li><a class="dropdown-item" href="{% url 'blog:signup' %}">新規登録</a></li>
+                  {% endif %}
+                  </ul>
+                </li>
+
+                </ul>
+                <!-- Left links -->
+                <form action="{% url 'blog:search' %}" method="POST" class="d-flex input-group w-auto">{% csrf_token %}
+                    <input
+                      type="search"
+                      class="form-control rounded"
+                      placeholder="Search"
+                      aria-label="Search"
+                      aria-describedby="search-addon"
+                      name="freeword"
+                    />
+                    <!-- <span class="input-group-text border-0" id="search-addon">
+                      <button style="background: transparent; border: none; outline: none;" type="submit">{% csrf_token %}
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </span> -->
+                </form>
+            </div>
+            <!-- Collapsible wrapper -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+    
+    <main class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+      
+    {% block content %}
+    {% endblock %}
+    </main>
+
+    <!-- End your project here-->
+    <footer class="bg-primary text-white text-center text-lg-start mt-3">
+        <!-- Grid container -->
+        <div class="container-fluid p-4">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+              <h5 class="text-uppercase">Footer Content</h5>
+      
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+                molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+                voluptatem veniam, est atque cumque eum delectus sint!
+              </p>
+            </div>
+            <!--Grid column-->
+      
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase">Links</h5>
+      
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white">Link 1</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 2</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 3</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 4</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+      
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase mb-0">Links</h5>
+      
+              <ul class="list-unstyled">
+                <li>
+                  <a href="#!" class="text-white">Link 1</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 2</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 3</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 4</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </div>
+        <!-- Grid container -->
+      
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2020 Copyright:
+          <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.js"></script>
+  </body>
+</html>

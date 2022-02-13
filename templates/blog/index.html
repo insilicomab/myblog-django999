@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Jumbotron -->
+<div class="p-5 text-center bg-light mb-3">
+    <h1 class="mb-3">{{ request.site.siteconfig.top_title }}</h1>
+    <h4 class="mb-3">{{ request.site.siteconfig.top_subtitle }}</h4>
+</div>
+<!-- Jumbotron -->
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for post in post_list %}
+
+    <div class="col">
+        <div class="card h-100">
+            {% if post.thumbnail %}
+            <img src="{{ post.thumbnail.url }}" class="card-img-top" alt="{{ post.title }}"/>
+            {% else %}
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" class="card-img-top" alt="Skyscrapers"/>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p>{{ post.category }}</p>
+                <p class="card-text">
+                    {{ post.content | safe | truncatechars_html:30 }}
+                </p>
+                <a href="{% url 'blog:post_detail' pk=post.id %}" type="button" class="btn btn-primary">もっと読む</a>     
+            </div>
+            <div class="card-footer text-center">
+                <small class="text-muted">by&nbsp;{{ post.user }}&nbsp;at&nbsp;{{ post.created_at.date }}</small>
+                <br>
+                <i class="fas fa-heart" style="color: plum;"></i>&nbsp;{{ post.like_count }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <a class="btn btn-outline-primary waves-effect" href="{% url 'blog:post_list' %}">すべての記事を見る</a>
+    <br>
+
+</div>
+{% endblock content %}

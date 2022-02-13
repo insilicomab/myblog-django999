@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <br>
+        <h2>Post 一覧</h2>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>内容</th>
+                    <th>作成日時</th>
+                    <th>更新日時</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in post_list %}
+                <tr>
+                    <td><a href="{% url 'blog:post_detail' pk=post.id %}">{{ post.title }}</a></td>
+                    <td>{{ post.content | safe | truncatechars_html:30 }}</td>
+                    <td>{{ post.created_at }}</td>
+                    <td>{{ post.updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'blog/pagenation.html' %}
+    </div>
+</div>
+{% endblock %}

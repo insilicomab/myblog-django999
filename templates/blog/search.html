@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <br>
+        <h2>Search 結果一覧</h2>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>内容</th>
+                    <th>作成日時</th>
+                    <th>更新日時</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for search in search_list %}
+                <tr>
+                    <td><a href="{% url 'blog:post_detail' pk=search.id %}">{{ search.title }}</a></td>
+                    <td>{{ search.content }}</td>
+                    <td>{{ search.created_at }}</td>
+                    <td>{{ search.updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'blog/pagenation.html' %}
+    </div>
+</div>
+{% endblock %}
