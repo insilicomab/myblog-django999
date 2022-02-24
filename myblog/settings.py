@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'blog',
     'django.contrib.sites',
     'sitemanager',
+    'storages',
 ]
 
 # siteフレームワークを使用するため
@@ -136,9 +137,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'blog:login'
 LOGIN_REDIRECT_URL = 'blog:index'
 
+# S3のための記述
+AWS_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 # 画像の保存先
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
+MEDIA_URL = 'https://%s/%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 # herokuデプロイのための追記
 
@@ -162,3 +168,5 @@ except ImportError:
 
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
